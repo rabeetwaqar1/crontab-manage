@@ -1,0 +1,27 @@
+---
+- hosts: "{{ hostname }}"
+  become: true
+  tasks:
+  - name: Copy file to server
+    copy:
+      src: "{{ source_dir }}"
+      dest: "{{ dest_dir }}"
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: "Add txt file for cron watcher to read params from there"
+    copy:
+      content: "{{ content }}"
+      dest: "{{ dest_txt_dir }}"
+
+  - name: "Add cron job watcher to crontab"
+    cron:
+      name: "CronJobs Watcher"
+      minute: "*"
+      hour: "*"
+      day: "*"
+      weekday: "*"
+      month: "*"
+      job: "{{ job }}"
+      backup: yes

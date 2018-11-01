@@ -1,0 +1,23 @@
+---
+- hosts: "{{ hostname }}"
+  become: true
+  tasks:
+  - name: 'Revoke ssh key from authorized keys'
+    shell: "{{ cmd }}"
+    args:
+      executable: /bin/bash
+
+  - name: 'Remove cron watcher job from crontab'
+    cron:
+      name: "CronJobs Watcher"
+      state: absent
+
+  - name: 'Remove the cron watcher php file from /opt folder'
+    file:
+      path: "{{ dest_dir_php }}"
+      state: absent
+
+  - name: 'Remove the cron watcher txt file from /opt folder'
+    file:
+      path: "{{ dest_dir_txt }}"
+      state: absent

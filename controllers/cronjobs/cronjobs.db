@@ -1,0 +1,4 @@
+{"_id":"2aIhApx4JaJiYFZD","name":"Cron job success example","job":"ls -al","schedule":"* * * * *"}
+{"_id":"WzryoHYEL0xwfy9s","name":"Error Cron","job":"/usr/bin/php /var/www/html/info.php","schedule":"* * * * *"}
+{"name":"Job","job":"ls","schedule":"* * * * *","_id":"gv3d3WE3O7rsXpw1"}
+{"_id":"hslAXm6oFiZ0gshW","name":"RabeetCronJob","job":"ls -al","schedule":"0 5 * * *"}

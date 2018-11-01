@@ -1,0 +1,9 @@
+---
+- hosts: "{{ hostname }}"
+  become: true
+  tasks:
+  - name: 'Remove job from crontab'
+    cron:
+      name: "{{ name }}"
+      state: absent
+

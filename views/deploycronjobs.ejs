@@ -1,0 +1,80 @@
+<body>
+<% include navbar %>
+<div class="container">
+    <h2>Deploy CronJobs</h2>
+    <a class="btn btn-primary" onclick="newDeployJob();"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> New</a>
+    <br/>
+    <table class="table table-striped" id="main_table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Server</th>
+            <th>CronJob</th>
+            <th>Status</th>
+            <th>Actions</th>
+            <th></th>
+        </tr>
+        </thead>
+        <div class="text-center">
+            <div class="loader"></div>
+        </div>
+
+        <tbody>
+        <% var index = 1 %>
+        <% JSON.parse(deployedcrons).forEach(function(deployed){ %>
+        <!-- color based on crontab state -->
+        <tr>
+            <td>
+                <%= index %>
+                <% index += 1 %>
+            </td>
+            <td>
+                <%= deployed.server_id %>
+            </td>
+            <td>
+                <%= deployed.cron_id %>
+            </td>
+
+            <td>
+                <%= deployed.status %>
+            </td>
+            <td>
+                <!--<a class="btn btn-primary" onclick="editServer('<%= deployed._id %>')"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>-->
+                <a class="btn btn-danger" onclick="deleteServer('<%= deployed._id %>')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+            </td>
+        </tr>
+        <% }); %>
+
+        </tbody>
+
+    </table>
+</div>
+<% include popup.ejs %>
+</body>
+
+
+<script src="/jquery.js"></script>
+<script src="/datatables.min.js"></script>
+<script src="/bootstrap.min.js"></script>
+<script src="/deploycron.js"></script>
+
+<script type="text/javascript">
+    let routes = [];
+    let deployedcrons = [];
+    let _servers = [];
+    let _cronjobs = [];
+
+    $(function () {
+        // initialize tooltips
+        $('[data-toggle="tooltip"]').tooltip();
+        routes = JSON.parse('<%- routes %>');
+        deployedcrons = JSON.parse('<%- deployedcrons.replace(/\\\\/g, "\\\\\\\\").replace(/\\\"/g,"\\\\\"").replace(/\'/g,"\\\'").replace(/\\t/g, " ") %>');
+        fetchServers();
+        fetchCrons();
+    })
+</script>
+
+
+
+
+</html>

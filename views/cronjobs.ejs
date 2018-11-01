@@ -1,0 +1,68 @@
+
+<% include navbar %>
+<div class="container">
+    <h2>CronJobs</h2>
+    <a class="btn btn-primary" onclick="newCronJob();"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> New</a>
+    <br/>
+    <table class="table table-striped" id="main_table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Job</th>
+            <th>Actions</th>
+            <th></th>
+        </tr>
+        </thead>
+        <div class="text-center">
+            <div class="loader"></div>
+        </div>
+
+        <tbody>
+        <% var index = 1 %>
+        <% JSON.parse(cronjobs).forEach(function(cronjob){ %>
+        <!-- color based on crontab state -->
+        <tr>
+
+            <td>
+                <%= index %>
+                <% index += 1 %>
+            </td>
+            <td>
+                <%= cronjob.name %>
+            </td>
+            <td>
+                <%= cronjob.schedule + ' ' + cronjob.job %>
+            </td>
+            <td>
+                <a class="btn btn-primary" onclick="editJob('<%= cronjob._id %>')"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+                <a class="btn btn-danger" onclick="deleteJob('<%= cronjob._id %>')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+            </td>
+        </tr>
+        <% }); %>
+
+        </tbody>
+
+    </table>
+</div>
+<% include popup.ejs %>
+
+<script src="/jquery.js"></script>
+<script src="/datatables.min.js"></script>
+<script src="/cronjobs.js"></script>
+<script src="/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+    var routes = [];
+    var cronjobs = [];
+
+    $(function () {
+        // initialize tooltips
+        $('[data-toggle="tooltip"]').tooltip();
+        routes = JSON.parse('<%- routes %>');
+        cronjobs = JSON.parse('<%- cronjobs.replace(/\\\\/g, "\\\\\\\\").replace(/\\\"/g,"\\\\\"").replace(/\'/g,"\\\'").replace(/\\t/g, " ") %>');
+
+    })
+</script>
+</body>
+</html>

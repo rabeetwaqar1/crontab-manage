@@ -1,0 +1,19 @@
+{
+  "name": "crontab-manage",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "connect-busboy": "0.0.2",
+    "cookie-parser": "~1.4.3",
+    "cron-parser": "^2.6.0",
+    "debug": "~2.6.9",
+    "ejs": "~2.5.7",
+    "express": "~4.16.0",
+    "http-errors": "~1.6.2",
+    "morgan": "~1.9.0",
+    "nedb": "^1.8.0"
+  }
+}

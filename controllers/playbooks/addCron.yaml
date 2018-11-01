@@ -1,0 +1,16 @@
+---
+- hosts: "{{ hostname }}"
+  become: true
+  tasks:
+  - name: "Add job to crontab"
+    cron:
+      name: "{{ name }}"
+      minute: "{{ minute }}"
+      hour: "{{ hour }}"
+      day: "{{ day }}"
+      weekday: "{{ weekday }}"
+      month: "{{ month }}"
+      job: "{{ job }}"
+      backup: yes
+
+
