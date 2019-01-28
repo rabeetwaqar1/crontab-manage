@@ -1,0 +1,99 @@
+
+<% include navbar %>
+<div class="container">
+    <h2>Deploy CronJobs</h2>
+    <a class="btn btn-primary" onclick="newDeployJob();"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> New</a>
+    <br/>
+    <table class="table table-striped" id="main_table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Id</th>
+            <th>Server</th>
+            <th>CronJob</th>
+            <th>Status</th>
+            <th>Created At</th>
+            <th>Actions</th>
+            <th></th>
+        </tr>
+        </thead>
+        <div class="text-center">
+            <div class="loader"></div>
+        </div>
+
+        <tbody>
+        <% var index = 1 %>
+        <% JSON.parse(deployedcrons).forEach(function(deployed){ %>
+        <!-- color based on crontab state -->
+        <tr>
+            <td>
+                <%= index %>
+                <% index += 1 %>
+            </td>
+            <td>
+                <%= deployed._id %>
+            </td>
+            <td>
+                <% if(typeof deployed.server_details !== "undefined") { %>
+                    <%= deployed.server_details.name + " | " + deployed.server_details.hostname %>
+                <% } else { %>
+                    <%= "Not found" %>
+                <% }  %>
+            </td>
+
+            <td>
+                <% if(typeof deployed.cron_details !== "undefined") { %>
+                    <%= deployed.cron_details._id + ' | ' + deployed.cron_details.schedule + ' ' + deployed.cron_details.job %>
+                <% } else { %>
+                    <%= "Not found" %>
+                <% }  %>
+            </td>
+            <td>
+                <%= deployed.status %>
+            </td>
+            <td>
+                <%= new Date(Number(deployed.created)).toString().slice(0, 25) %>
+            </td>
+            <td>
+                <a title="Delete" class="btn btn-danger" onclick="deleteCron('<%= deployed._id %>')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+                <% if(deployed.status === "pending") { %>
+                    <a title="Deploy" class="btn btn-success" onclick="deployCron('<%= deployed._id %>')"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></a>
+                <% } %>
+
+            </td>
+        </tr>
+        <% }); %>
+
+        </tbody>
+
+    </table>
+</div>
+<% include popup.ejs %>
+
+
+<script src="/jquery.js"></script>
+<script src="/datatables.min.js"></script>
+<script src="/bootstrap.min.js"></script>
+<script src="/toastr.js"></script>
+<script src="/helper.js"></script>
+<script src="/deploycron.js"></script>
+
+<script type="text/javascript">
+    let routes = [];
+    let deployedcrons = [];
+    let servers = [];
+    let crons = [];
+
+    $(function () {
+        // initialize tooltips
+        $('[data-toggle="tooltip"]').tooltip();
+        routes = JSON.parse('<%- routes %>');
+        deployedcrons = JSON.parse('<%- deployedcrons.replace(/\\\\/g, "\\\\\\\\").replace(/\\\"/g,"\\\\\"").replace(/\'/g,"\\\'").replace(/\\t/g, " ") %>');
+        servers = JSON.parse('<%- serversdata.replace(/\\\\/g, "\\\\\\\\").replace(/\\\"/g,"\\\\\"").replace(/\'/g,"\\\'").replace(/\\t/g, " ") %>');
+        crons = JSON.parse('<%- cronsdata.replace(/\\\\/g, "\\\\\\\\").replace(/\\\"/g,"\\\\\"").replace(/\'/g,"\\\'").replace(/\\t/g, " ") %>');
+        updateServers();
+        updateCrons();
+    })
+</script>
+</body>
+</html>

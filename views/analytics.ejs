@@ -1,0 +1,55 @@
+
+<% include navbar %>
+<link rel="stylesheet" href="/highcharts.css" />
+    <div class="container">
+        <h2>Analytics</h2>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Error Crons VS Success Crons</div>
+                    <div class="panel-body">
+                        <div id="highcharts_1"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Crons In Use VS Not In Use</div>
+                    <div class="panel-body">
+                        <div id="highcharts_2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<% include popup.ejs %>
+
+
+<script src="/jquery.js"></script>
+<script src="/datatables.min.js"></script>
+<script src="/highcharts.js"></script>
+<script src="/exporting.js"></script>
+<script src="/bootstrap.min.js"></script>
+<script src="/toastr.js"></script>
+<script src="/helper.js"></script>
+<script src="/analytics.js"></script>
+
+<script type="text/javascript">
+    let routes = [];
+    let error_crons = [];
+    let crons_not_in_use = [];
+
+    $(function () {
+        // initialize tooltips
+        $('[data-toggle="tooltip"]').tooltip();
+        routes = JSON.parse('<%- routes %>');
+        error_crons = JSON.parse('<%- error_crons %>');
+        crons_not_in_use = JSON.parse('<%- crons_not_in_use %>');
+        updateErrorCronsPieChart();
+        updateCronsNotInUseChart();
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+---
+- hosts: "{{ hostname }}"
+  become: true
+  tasks:
+  - name: Copy file to /tmp
+    shell: "/usr/bin/crontab -l > {{ crontab_dir }}"
+    args:
+      executable: /bin/bash
+
+  - name: Fetch file from remote server
+    fetch:
+     src: "{{ crontab_dir }}"
+     dest: "{{ crontab_dir }}"
+     flat: yes

@@ -1,0 +1,80 @@
+
+<% include navbar %>
+<div class="container">
+    <h2>Import Crontab</h2>
+    <a class="btn btn-primary" onclick="newImportJob();"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> New</a>
+    <br/>
+    <table class="table table-striped" id="main_table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Server</th>
+            <th>CreatedAt</th>
+            <th>UpdatedAt</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <div class="text-center">
+            <div class="loader"></div>
+        </div>
+
+        <tbody>
+        <% var index = 1 %>
+        <% var servers_list = JSON.parse(servers); %>
+        <% JSON.parse(importcrontabs).forEach(function(crontabs){ %>
+        <!-- color based on crontab state -->
+        <tr>
+            <td>
+                <%= index %>
+                <% index += 1 %>
+            </td>
+            <td>
+                <%=  servers_list[crontabs.server_id].name + " | " + servers_list[crontabs.server_id].hostname %>
+            </td>
+
+            <td>
+                <%= new Date(parseInt(crontabs.created_at)).toString().slice(0, 25) %>
+            </td>
+            <td>
+                <%= new Date(parseInt(crontabs.updated_at)).toString().slice(0, 25) %>
+            </td>
+            <td>
+                <a title="Show" class="btn btn-primary" onclick="showCrontabString('<%= crontabs._id %>')"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a>
+                <a title="Synchronize" class="btn btn-info" onclick="syncImportJob('<%= crontabs._id %>')"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></a>
+                <a title="Delete" class="btn btn-danger" onclick="deleteImportJob('<%= crontabs._id %>')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+                <a title="Deploy" class="btn btn-success" onclick="deployCrontab('<%= crontabs._id %>')"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></a>
+                <a title="Backup" class="btn btn-warning" onclick="backupCrontab('<%= crontabs._id %>')"><span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span></a>
+            </td>
+        </tr>
+        <% }); %>
+
+        </tbody>
+
+    </table>
+</div>
+<% include popup.ejs %>
+
+<script src="/jquery.js"></script>
+<script src="/datatables.min.js"></script>
+<script src="/bootstrap.min.js"></script>
+<script src="/toastr.js"></script>
+<script src="/helper.js"></script>
+<script src="/importcrontab.js"></script>
+
+<script type="text/javascript">
+    let routes = [];
+    let servers = [];
+    let importcrontabs = [];
+
+    $(function () {
+        // initialize tooltips
+        $('[data-toggle="tooltip"]').tooltip();
+        routes = JSON.parse('<%- routes %>');
+        servers = JSON.parse('<%- servers.replace(/\\\\/g, "\\\\\\\\").replace(/\\\"/g,"\\\\\"").replace(/\'/g,"\\\'").replace(/\\t/g, " ") %>');
+
+        updateServers();
+
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+node_modules/
+.idea/
+controllers/cronjobs/cronjobs.db
+controllers/servers/servers.db
+controllers/deploycronjobs/deploycronjobs.db
+controllers/slack/slack.db
+controllers/cronjobsstatus/cronjobsstatus.db
+controllers/unique/unique.db
+controllers/importcrontab/importcrontab.db

@@ -1,0 +1,72 @@
+
+<% include navbar %>
+<div class="container">
+    <h2>Backups</h2>
+    <table class="table table-striped" id="main_table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Server</th>
+            <th>CreatedAt</th>
+            <th>Actions</th>
+            <th></th>
+        </tr>
+        </thead>
+        <div class="text-center">
+            <div class="loader"></div>
+        </div>
+
+        <tbody>
+        <% var index = 1 %>
+        <% var servers_list = JSON.parse(servers); %>
+        <% JSON.parse(backups).forEach(function(backup){ %>
+        <!-- color based on crontab state -->
+        <tr>
+
+            <td>
+                <%= index %>
+                <% index += 1 %>
+            </td>
+
+            <td>
+                <%=  servers_list[backup.server_id].name + " | " + servers_list[backup.server_id].hostname %>
+            <td>
+                <%= new Date(parseInt(backup.created_at)).toString().slice(0, 25) %>
+            </td>
+
+            <td>
+                <a title="Show" class="btn btn-primary" onclick="showCrontabString('<%= backup._id %>')"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a>
+                <a title="Delete" class="btn btn-danger" onclick="deleteBackup('<%= backup._id %>')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+                <a title="Restore" class="btn btn-warning" onclick="restoreBackup('<%= backup._id %>')"><span class="glyphicon glyphicon-import" aria-hidden="true"></span></a>
+            </td>
+        </tr>
+        <% }); %>
+
+        </tbody>
+
+    </table>
+</div>
+<% include popup.ejs %>
+
+
+<script src="/jquery.js"></script>
+<script src="/datatables.min.js"></script>
+<script src="/bootstrap.min.js"></script>
+<script src="/toastr.js"></script>
+<script src="/helper.js"></script>
+<script src="/backups.js"></script>
+
+<script type="text/javascript">
+    let routes = [];
+    let servers = [];
+
+    $(function () {
+        // initialize tooltips
+        $('[data-toggle="tooltip"]').tooltip();
+        routes = JSON.parse('<%- routes %>');
+        servers = JSON.parse('<%- servers.replace(/\\\\/g, "\\\\\\\\").replace(/\\\"/g,"\\\\\"").replace(/\'/g,"\\\'").replace(/\\t/g, " ") %>');
+
+    })
+</script>
+</body>
+</html>

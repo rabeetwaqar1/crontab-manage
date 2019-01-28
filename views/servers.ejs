@@ -1,0 +1,69 @@
+
+<% include navbar %>
+<div class="container">
+    <h2>Servers</h2>
+    <a class="btn btn-primary" onclick="newServer();"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> New</a>
+    <br/>
+    <table class="table table-striped" id="main_table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Hostname</th>
+            <th>Actions</th>
+            <th></th>
+        </tr>
+        </thead>
+        <div class="text-center">
+            <div class="loader"></div>
+        </div>
+
+        <tbody>
+        <% var index = 1 %>
+        <% JSON.parse(servers).forEach(function(server){ %>
+        <!-- color based on crontab state -->
+        <tr>
+
+            <td>
+                <%= index %>
+                <% index += 1 %>
+            </td>
+            <td>
+                <%= server.name + " | " + server.hostname %>
+            </td>
+            <td>
+                <%= server.username + '@' + server.hostname %>
+            </td>
+            <td>
+                <a title="Edit" class="btn btn-primary" onclick="editServer('<%= server._id %>')"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+                <a title="Delete" class="btn btn-danger" onclick="deleteServer('<%= server._id %>')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+            </td>
+        </tr>
+        <% }); %>
+
+        </tbody>
+
+    </table>
+</div>
+<% include popup.ejs %>
+
+<script src="/jquery.js"></script>
+<script src="/datatables.min.js"></script>
+<script src="/bootstrap.min.js"></script>
+<script src="/toastr.js"></script>
+<script src="/helper.js"></script>
+<script src="/servers.js"></script>
+
+
+<script type="text/javascript">
+    let routes = [];
+    let servers = [];
+    $(function () {
+        // initialize tooltips
+        $('[data-toggle="tooltip"]').tooltip();
+        routes = JSON.parse('<%- routes %>');
+        servers = JSON.parse('<%- servers.replace(/\\\\/g, "\\\\\\\\").replace(/\\\"/g,"\\\\\"").replace(/\'/g,"\\\'").replace(/\\t/g, " ") %>');
+    })
+</script>
+</body>
+</html>

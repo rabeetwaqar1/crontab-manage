@@ -1,0 +1,28 @@
+{
+    "server_config": {
+        "port": 9000,
+        "host": "0.0.0.0"
+    },
+    "watcher_file": "cron_watcher.php",
+    "watcher_txt_file": "cron_watcher.txt",
+    "ssh_key_path": "~/.ssh/id_rsa.pub",
+    "ssh_known_hosts_path": "~/.ssh/known_hosts",
+    "ansible_playbook_path":  "/playbooks/",
+    "source_file_path": "/scripts/",
+    "dest_file_path": "/opt/",
+    "dest_txt_file_path": "/opt/",
+    "log_folder": "/var/log",
+    "ansible_host_file_path": "/etc/ansible/hosts",
+    "ansible_executable": "/usr/bin/ansible-playbook",
+    "ssh_keyscan_executable": "/usr/bin/ssh-keyscan",
+    "ssh_pass_executable": "/usr/bin/sshpass",
+    "ssh_copy_id_executable": "/usr/bin/ssh-copy-id",
+    "php_executable": "/usr/bin/php",
+    "cat_executable": "/bin/cat",
+    "grep_executable": "/bin/grep",
+    "echo_executable": "/bin/echo",
+    "sed_executable": "/bin/sed",
+    "pem_file_path": "/pem/",
+    "crontab_file_path": "/tmp/ansible.txt",
+    "awk_executable": "/usr/bin/awk"
+}

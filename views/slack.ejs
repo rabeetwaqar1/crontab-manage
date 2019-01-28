@@ -1,0 +1,70 @@
+
+<% include navbar %>
+<div class="container">
+    <h2>Slack</h2>
+    <a class="btn btn-primary" onclick="newSlack();"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> New</a>
+    <br/>
+    <table class="table table-striped" id="main_table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Channel</th>
+            <th>Token</th>
+            <th>Actions</th>
+            <th></th>
+        </tr>
+        </thead>
+        <div class="text-center">
+            <div class="loader"></div>
+        </div>
+
+        <tbody>
+        <% var index = 1 %>
+        <% JSON.parse(slacks).forEach(function(slack){ %>
+        <!-- color based on crontab state -->
+        <tr>
+
+            <td>
+                <%= index %>
+                <% index += 1 %>
+            </td>
+            <td>
+                <%= slack.channel %>
+            </td>
+            <td>
+                <%= Array(slack.token.length).join("*") %>
+            </td>
+            <td>
+                <a title="Edit" class="btn btn-primary" onclick="editSlack('<%= slack._id %>')"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+                <a title="Delete" class="btn btn-danger" onclick="deleteSlack('<%= slack._id %>')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+            </td>
+        </tr>
+        <% }); %>
+
+        </tbody>
+
+    </table>
+</div>
+<% include popup.ejs %>
+
+<script src="/jquery.js"></script>
+<script src="/datatables.min.js"></script>
+<script src="/bootstrap.min.js"></script>
+<script src="/toastr.js"></script>
+<script src="/helper.js"></script>
+<script src="/slack.js"></script>
+
+<script type="text/javascript">
+    let routes = [];
+    let slacks = [];
+
+    $(function () {
+        // initialize tooltips
+        $('[data-toggle="tooltip"]').tooltip();
+        routes = JSON.parse('<%- routes %>');
+        slacks = JSON.parse('<%- slacks.replace(/\\\\/g, "\\\\\\\\").replace(/\\\"/g,"\\\\\"").replace(/\'/g,"\\\'").replace(/\\t/g, " ") %>');
+
+    })
+</script>
+</body>
+</html>

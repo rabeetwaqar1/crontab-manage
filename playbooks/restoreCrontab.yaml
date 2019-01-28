@@ -1,0 +1,17 @@
+---
+- hosts: "{{ hostname }}"
+  become: true
+  tasks:
+
+  - name: Copy restore file to server
+    copy:
+      src: "{{ dir }}"
+      dest: "{{ dir }}"
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: Copy file to crontab
+    shell: "{{ cmd }}"
+    args:
+      executable: /bin/bash

@@ -1,0 +1,23 @@
+---
+- hosts: "{{ hostname }}"
+  become: true
+  tasks:
+  - name: "Add job to crontab"
+    cron:
+      name: "{{ cron_id }}"
+      minute: "{{ minute }}"
+      hour: "{{ hour }}"
+      day: "{{ day }}"
+      weekday: "{{ weekday }}"
+      month: "{{ month }}"
+      job: "{{ job }}"
+      backup: yes
+      disabled: "{{ disabled }}"
+
+  - name: "Append cron-id in file"
+    lineinfile:
+      dest: "{{ dest_txt_dir }}"
+      line: "{{ cron_id }}"
+
+
+

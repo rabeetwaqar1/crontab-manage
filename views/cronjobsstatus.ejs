@@ -1,0 +1,79 @@
+
+<% include navbar %>
+<div class="container">
+    <h2>CronJobs Status</h2>
+    <a id="remove_all" style="float: right;" class="btn btn-danger" onclick="removeAll();"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> Flush All</a>
+    <br/>
+    <table class="table table-striped" id="main_table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Hostname</th>
+            <th>CronId</th>
+            <th>Execution Time</th>
+            <th>Error</th>
+            <th>Status</th>
+            <th id="logs_th">Logs</th>
+        </tr>
+        </thead>
+        <div class="text-center">
+            <div class="loader"></div>
+        </div>
+
+        <tbody>
+        <% var index = 1 %>
+        <% JSON.parse(cronjobsstatus).forEach(function(cronjob){ %>
+        <!-- color based on crontab state -->
+        <tr>
+
+            <td>
+                <%= index %>
+                <% index += 1 %>
+            </td>
+            <td>
+                <%= cronjob.hostname + ' | ' + cronjob.distribution %>
+            </td>
+            <td>
+                <%= cronjob.cron_id %>
+            </td>
+            <td>
+                <%= cronjob.output[1]; %>
+            </td>
+            <td>
+                <%= cronjob.output[2]; %>
+            </td>
+            <td>
+                <%= cronjob.output[0].split('@')[1]; %>
+            </td>
+            <td>
+                <a title='Full logs' target='_blank' href="/logs?hostname=<%= cronjob.hostname %>&cron_id=<%= cronjob.cron_id %>"><span class="glyphicon glyphicon-new-window"></span></a>
+            </td>
+
+        </tr>
+        <% }); %>
+
+        </tbody>
+
+    </table>
+</div>
+<% include popup.ejs %>
+
+<script src="/jquery.js"></script>
+<script src="/datatables.min.js"></script>
+<script src="/bootstrap.min.js"></script>
+<script src="/toastr.js"></script>
+<script src="/helper.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/cronjobsstatus.js"></script>
+
+<script type="text/javascript">
+    let routes = [];
+
+    $(function () {
+        // initialize tooltips
+        $('[data-toggle="tooltip"]').tooltip();
+        routes = JSON.parse('<%- routes %>');
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+---
+- hosts: "{{ hostname }}"
+  become: true
+  tasks:
+  - name: 'Remove job from crontab'
+    cron:
+      name: "{{ cron_id }}"
+      state: absent
+
+  - name: "Remove cron-id from cron watcher text file"
+    blockinfile:
+      dest: "{{ dest_text_dir }}"
+      marker: "{{ cron_id }}"
+      block: ""
+      state: absent
+
+  - name: 'Remove stderr file from logs folder'
+    file:
+      path: "{{ log_path }}.stderr"
+      state: absent
+
+  - name: 'Remove stdout file from logs folder'
+    file:
+      path: "{{ log_path }}.stdout"
+      state: absent
+
+  - name: 'Remove log file from logs folder'
+    file:
+      path: "{{ log_path }}.log"
+      state: absent
+
