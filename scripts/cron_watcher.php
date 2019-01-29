@@ -41,7 +41,7 @@ fclose($fh);
 
 if(count($cron_errors) > 0) {
     $json = json_encode($cron_errors);
-    $domain = "http://35.157.227.228:9000";
+    $domain = "http://mydomain.com";
     $path = "/api/cronjobsstatus/listener";
     $cmd = "echo '" . $json . "' | curl --header 'Content-Type: application/json' -d @- $domain" . $path;
     $response = shell_exec($cmd);
