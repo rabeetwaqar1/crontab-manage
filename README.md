@@ -1,4 +1,4 @@
-# crontab-manage
+# crontab-manage (Works only with Ubuntu / Linux distributions)
 Manage crontab from centralized master server.  
 
 Deploy cronjobs to crontab using ansible to any server and get logs real time to the master dashboard
